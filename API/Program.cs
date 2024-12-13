@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Interfaces;
+//using API.Middleware;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +19,8 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
-// Ensure CORS is applied before other middleware
+// Configure the HTTP request pipeline
+//app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader()
                   .AllowAnyMethod()
                   .WithOrigins("http://localhost:4200", "https://localhost:4200"));

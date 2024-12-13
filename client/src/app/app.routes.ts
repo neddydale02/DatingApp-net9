@@ -7,6 +7,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { authGuard } from './_guards/auth.guard';
+import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -21,5 +22,6 @@ export const routes: Routes = [
             {path: 'messages', component: MessagesComponent},
         ]
     },
+    {path: 'errors', component: TestErrorsComponent},
     {path: '**', component: HomeComponent, pathMatch: 'full'},
 ]
