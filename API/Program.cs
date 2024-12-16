@@ -19,6 +19,13 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<API.Data.DataContext>();
+            // Crea il database se non esiste
+            dbContext.Database.EnsureCreated();
+        }
+
 // Configure the HTTP request pipeline
 //app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(x => x.AllowAnyHeader()
