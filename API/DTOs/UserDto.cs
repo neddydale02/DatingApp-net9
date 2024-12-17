@@ -1,6 +1,4 @@
-using System;
-
-namespace API.DTOs;
+﻿namespace API;
 
 public class UserDto
 {

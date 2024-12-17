@@ -1,20 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { User } from '../_models/user';
-//import { map } from 'rxjs';
-import { catchError, map } from 'rxjs';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-
   private http = inject(HttpClient);
-  baseUrl = "http://localhost:5000/api/"
+  baseUrl = 'https://localhost:5001/api/';
   currentUser = signal<User | null>(null);
 
-  login(model:any){
-    return this.http.post<User>(this.baseUrl + "account/login", model).pipe(
+  login(model: any) {
+    return this.http.post<User>(this.baseUrl + 'account/login', model).pipe(
       map(user => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
@@ -24,8 +22,8 @@ export class AccountService {
     )
   }
 
-  register(model:any){
-    return this.http.post<User>(this.baseUrl + "account/register", model).pipe(
+  register(model: any) {
+    return this.http.post<User>(this.baseUrl + 'account/register', model).pipe(
       map(user => {
         if (user) {
           localStorage.setItem('user', JSON.stringify(user));
@@ -35,10 +33,9 @@ export class AccountService {
       })
     )
   }
-  
 
-  logout(){
+  logout() {
     localStorage.removeItem('user');
-      this.currentUser.set(null);
+    this.currentUser.set(null);
   }
 }

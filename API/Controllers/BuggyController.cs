@@ -1,10 +1,10 @@
-using System;
+﻿using API.Controllers;
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers;
+namespace API;
 
 public class BuggyController(DataContext context) : BaseApiController
 {
@@ -15,24 +15,24 @@ public class BuggyController(DataContext context) : BaseApiController
         return "secret text";
     }
 
-    [Authorize]
     [HttpGet("not-found")]
     public ActionResult<AppUser> GetNotFound()
     {
         var thing = context.Users.Find(-1);
+
         if (thing == null) return NotFound();
+
         return thing;
     }
 
-    [Authorize]
     [HttpGet("server-error")]
     public ActionResult<AppUser> GetServerError()
     {
         var thing = context.Users.Find(-1) ?? throw new Exception("A bad thing has happened");
+
         return thing;
     }
 
-    [Authorize]
     [HttpGet("bad-request")]
     public ActionResult<string> GetBadRequest()
     {

@@ -16,17 +16,17 @@ export class RegisterComponent {
   cancelRegister = output<boolean>();
   model: any = {}
 
-  register(){
+  register() {
     this.accountService.register(this.model).subscribe({
       next: response => {
-      console.log(response);
-      this.cancel();
+        console.log(response);
+        this.cancel();
       },
       error: error => this.toastr.error(error.error)
     })
   }
 
-  cancel(){
-    this.cancelRegister.emit(false)
+  cancel() {
+    this.cancelRegister.emit(false);
   }
 }

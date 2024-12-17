@@ -1,12 +1,9 @@
-using System;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
-using API.Errors;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-namespace API.Middleware;
+namespace API;
 
-public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger,
+public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, 
     IHostEnvironment env)
 {
     public async Task InvokeAsync(HttpContext context)
@@ -15,7 +12,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         {
             await next(context);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);
             context.Response.ContentType = "application/json";
