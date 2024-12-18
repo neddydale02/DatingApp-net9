@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.4",
+    "@angular/cdk": "^19.0.3",
     "@angular/common": "^19.0.4",
     "@angular/compiler": "^19.0.4",
     "@angular/core": "^19.0.4",
@@ -21,7 +22,10 @@
     "bootstrap": "^5.3.3",
     "bootswatch": "^5.3.3",
     "font-awesome": "^4.7.0",
+    "ng-gallery": "^12.0.0",
     "ngx-bootstrap": "^19.0.1",
+    "ngx-gallery": "^5.10.0",
+    "ngx-gallery-9": "^1.0.6",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
