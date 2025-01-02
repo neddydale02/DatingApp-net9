@@ -11,7 +11,7 @@ import { TitleCasePipe } from '@angular/common';
   standalone: true,
   imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive, TitleCasePipe],
   templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css'
+  styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
   accountService = inject(AccountService);
@@ -31,5 +31,14 @@ export class NavComponent {
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
+  }
+
+  logPhotoUrl(): void {
+    const currentUser = this.accountService.currentUser();
+    if (currentUser) {
+      console.log('User photoUrl:', currentUser.photoUrl);
+    } else {
+      console.log('No user is currently logged in.');
+    }
   }
 }

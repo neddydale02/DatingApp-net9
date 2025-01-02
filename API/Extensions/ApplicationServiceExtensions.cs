@@ -1,5 +1,7 @@
 ﻿using API.Data;
+using API.Helpers;
 using API.Interfaces;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions;
@@ -29,7 +31,13 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IUserRepository, UserRepository>();
 
         // Aggiunge il servizio per la gestione delle foto
+        services.AddScoped<IPhotoService, PhotoService>();
+
+        // Aggiunge il servizio per la gestione delle foto (vecchio, prima di Cloudinary)
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        // Configura le impostazioni di Cloudinary
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
 
         // Ritorna la collezione di servizi configurata
         return services;

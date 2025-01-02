@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Member } from '../_models/members';
 import { AccountService } from './account.service';
 import { of, tap } from 'rxjs';
+import { Photo } from '../_models/photos';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,36 @@ export class MembersService {
             m.userName === member.userName ? member : m // Aggiorna il membro nella lista locale
           )
         )
+      })
+    );
+  }
+
+  // Metodo per impostare la foto principale di un membro
+  setMainPhoto(photo: Photo) {
+    return this.http.put(this.baseUrl + 'users/set-main-photo/' + photo.id, {}).pipe(
+      tap(() => {
+        this.members.update(members => 
+          members.map(m => {
+            if (m.photos.includes(photo)) { // Se la foto è presente nei membri
+              m.photoUrl = photo.url; // Aggiorna l'URL della foto principale
+            }
+            return m; // Restituisce il membro aggiornato
+          })
+        );
+      })
+    );
+  }
+
+  // Metodo per eliminare una foto di un membro
+  deletePhoto(photo: Photo) {
+    return this.http.delete(this.baseUrl + 'users/delete-photo/' + photo.id, {}).pipe(
+      tap(() => {
+        this.members.update(members =>
+          members.map(m => {
+            m.photos = m.photos.filter(p => p !== photo); // Filtra le foto per rimuovere quella eliminata
+            return m; // Restituisce il membro aggiornato
+          })
+        );
       })
     );
   }

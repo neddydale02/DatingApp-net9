@@ -14,6 +14,8 @@ namespace API.Helpers
              o.MapFrom(s => s.Photos.FirstOrDefault(x => x.IsMain)!.Url)); //d = destinazione, o = opzioni, s = sorgente, x = elemento
             CreateMap<Photo, PhotoDto>();
             CreateMap<MemberUpdateDto, AppUser>();
+            CreateMap<RegisterDto, AppUser>();
+            CreateMap<string, DateOnly>().ConvertUsing(s => DateOnly.Parse(s));
         }
     }
 }
