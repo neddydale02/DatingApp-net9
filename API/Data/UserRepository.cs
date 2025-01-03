@@ -1,65 +1,77 @@
-using System;
+using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data;
+namespace API;
 
-// Implementazione del repository degli utenti
 public class UserRepository(DataContext context, IMapper mapper) : IUserRepository
 {
-
-    // Metodo per ottenere un membro (utente) specifico per nome utente
     public async Task<MemberDto?> GetMemberAsync(string username)
     {
         return await context.Users
-            .Where(x => x.UserName == username) // Filtra gli utenti per username
-            .ProjectTo<MemberDto>(mapper.ConfigurationProvider) // Proietta l'utente nel DTO
-            .SingleOrDefaultAsync(); // Restituisce un singolo utente o null se non trovato
+            .Where(x => x.UserName == username)
+            .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+            .SingleOrDefaultAsync();
     }
 
-    // Metodo per ottenere tutti i membri (utenti)
-    public async Task<IEnumerable<MemberDto>> GetMembersAsync()
+    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
     {
-        return await context.Users
-            .ProjectTo<MemberDto>(mapper.ConfigurationProvider) // Proietta gli utenti nel DTO
-            .ToListAsync(); // Restituisce la lista degli utenti
+        var query = context.Users.AsQueryable();
+
+        query = query.Where(x => x.UserName != userParams.CurrentUsername);
+
+        if (userParams.Gender != null) 
+        {
+            query = query.Where(x => x.Gender == userParams.Gender);
+        }
+
+        var minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MaxAge-1));
+        var maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-userParams.MinAge));
+
+        query = query.Where(x => x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob);
+
+        query = userParams.OrderBy switch
+        {
+            "created" => query.OrderByDescending(x => x.Created),
+            _ => query.OrderByDescending(x => x.LastActive)
+        };
+
+        return await PagedList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider), 
+            userParams.PageNumber, userParams.PageSize);
+            
     }
 
-    // Metodo per ottenere un utente per ID
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {
-        return await context.Users.FindAsync(id); // Trova l'utente per ID
+        return await context.Users.FindAsync(id);
     }
 
-    // Metodo per ottenere un utente per nome utente
     public async Task<AppUser?> GetUserByUsernameAsync(string username)
     {
         return await context.Users
-            .Include(x => x.Photos) // Include le foto dell'utente
-            .SingleOrDefaultAsync(x => x.UserName == username); // Trova l'utente per nome utente
+            .Include(x => x.Photos)
+            .SingleOrDefaultAsync(x => x.UserName == username);
     }
 
-    // Metodo per ottenere tutti gli utenti
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
         return await context.Users
-            .Include(x => x.Photos) // Include le foto degli utenti
-            .ToListAsync(); // Restituisce la lista degli utenti
+            .Include(x => x.Photos)
+            .ToListAsync();
     }
 
-    // Metodo per salvare tutte le modifiche
     public async Task<bool> SaveAllAsync()
     {
-        return await context.SaveChangesAsync() > 0; // Restituisce true se ci sono modifiche salvate
+        return await context.SaveChangesAsync() > 0;
     }
 
-    // Metodo per aggiornare un utente
     public void Update(AppUser user)
     {
-        context.Entry(user).State = EntityState.Modified; // Segna l'entità come modificata
+        context.Entry(user).State = EntityState.Modified;
     }
 }

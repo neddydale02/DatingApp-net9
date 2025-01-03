@@ -1,11 +1,11 @@
 import { Component, inject, input, OnInit, output } from '@angular/core'; // Importa i moduli e i decoratori necessari da Angular
-import { Member } from '../../_models/members'; // Importa il modello Member
+import { Member } from '../../_models/member'; // Importa il modello Member
 import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common'; // Importa i moduli comuni di Angular
 import { FileUploader, FileUploadModule } from 'ng2-file-upload'; // Importa il modulo e la classe per il caricamento dei file
 import { AccountService } from '../../_services/account.service'; // Importa il servizio AccountService
 import { environment } from '../../../environments/environment'; // Importa l'ambiente di configurazione
 import { MembersService } from '../../_services/members.service'; // Importa il servizio MembersService
-import { Photo } from '../../_models/photos'; // Importa il modello Photo
+import { Photo } from '../../_models/photo'; // Importa il modello Photo
 
 @Component({
   selector: 'app-photo-editor', // Definisce il selettore del componente

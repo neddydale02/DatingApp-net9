@@ -4,14 +4,13 @@ import { AccountService } from '../_services/account.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive, TitleCasePipe],
+  imports: [FormsModule, BsDropdownModule, RouterLink, RouterLinkActive],
   templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  styleUrl: './nav.component.css'
 })
 export class NavComponent {
   accountService = inject(AccountService);
@@ -31,14 +30,5 @@ export class NavComponent {
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
-  }
-
-  logPhotoUrl(): void {
-    const currentUser = this.accountService.currentUser();
-    if (currentUser) {
-      console.log('User photoUrl:', currentUser.photoUrl);
-    } else {
-      console.log('No user is currently logged in.');
-    }
   }
 }
