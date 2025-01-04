@@ -32,7 +32,7 @@ public class UsersController(IUserRepository userRepository, IMapper mapper,
 
         if (user == null) return NotFound();
 
-        return user;
+        return Ok(user);
     }
 
     [HttpPut]

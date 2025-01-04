@@ -16,7 +16,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 })
 export class MemberListComponent implements OnInit {
   memberService = inject(MembersService);
-  genderList = [{value: 'male', display: 'Males'}, {value: 'female', display: 'Females'}]
+  genderList = [{value: 'male', display: 'Males'}, {value: 'female', display: 'Females'}, {value: 'other', display: 'Other'}]
 
   ngOnInit(): void {
     if (!this.memberService.paginatedResult()) this.loadMembers();

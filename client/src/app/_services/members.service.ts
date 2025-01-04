@@ -20,10 +20,12 @@ export class MembersService {
   user = this.accountService.currentUser();
   userParams = new UserParams(this.user);
 
+  // Resetta i parametri dell'utente
   resetUserParams() {
     this.userParams = new UserParams(this.user);
   }
 
+  // Ottiene i membri con paginazione
   getMembers() {
     const response = this.memberCache.get(Object.values(this.userParams).join('-'));
 
@@ -44,6 +46,7 @@ export class MembersService {
     })
   }
 
+  // Imposta la risposta paginata
   private setPaginatedResponse(response: HttpResponse<Member[]>) {
     this.paginatedResult.set({
       items: response.body as Member[],
@@ -51,6 +54,7 @@ export class MembersService {
     })
   }
 
+  // Imposta gli header di paginazione
   private setPaginationHeaders(pageNumber: number, pageSize: number) {
     let params = new HttpParams();
 
@@ -62,6 +66,7 @@ export class MembersService {
     return params;
   }
 
+  // Ottiene un membro specifico per username
   getMember(username: string) {
     const member: Member = [...this.memberCache.values()]
       .reduce((arr, elem) => arr.concat(elem.body), [])
@@ -72,6 +77,7 @@ export class MembersService {
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
+  // Aggiorna le informazioni di un membro
   updateMember(member: Member) {
     return this.http.put(this.baseUrl + 'users', member).pipe(
       // tap(() => {
@@ -81,6 +87,7 @@ export class MembersService {
     )
   }
 
+  // Imposta una foto come principale
   setMainPhoto(photo: Photo) {
     return this.http.put(this.baseUrl + 'users/set-main-photo/' + photo.id, {}).pipe(
       // tap(() => {
@@ -94,6 +101,7 @@ export class MembersService {
     )
   }
 
+  // Elimina una foto
   deletePhoto(photo: Photo) {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photo.id).pipe(
       // tap(() => {

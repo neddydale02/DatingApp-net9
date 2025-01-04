@@ -33,7 +33,7 @@ public class AccountController(DataContext context, ITokenService tokenService,
             Username = user.UserName,
             Token = tokenService.CreateToken(user),
             KnownAs = user.KnownAs,
-            Gender = user.Gender
+            Gender = user.Gender,
         };
     }
 
@@ -45,8 +45,11 @@ public class AccountController(DataContext context, ITokenService tokenService,
                 .FirstOrDefaultAsync(x =>
                     x.UserName == loginDto.Username.ToLower());
 
-        if (user == null) return Unauthorized("Invalid username");
+        if (user == null) {
+            Console.WriteLine("Invalid username");
+            return Unauthorized("Invalid username");
 
+        }
         using var hmac = new HMACSHA512(user.PasswordSalt);
 
         var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));

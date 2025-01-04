@@ -10,7 +10,7 @@ import { NgxSpinnerComponent } from 'ngx-spinner';
     standalone: true,
     templateUrl: './app.component.html',
     styleUrl: './app.component.css',
-    imports: [RouterOutlet, NavComponent, HomeComponent, NgxSpinnerComponent]
+    imports: [RouterOutlet, NavComponent, NgxSpinnerComponent]
 })
 export class AppComponent implements OnInit {
   private accountService = inject(AccountService);
