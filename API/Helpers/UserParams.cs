@@ -1,6 +1,8 @@
+using API.Helpers;
+
 namespace API;
 
-public class UserParams
+public class UserParams : PaginationParams
 {
     private const int MaxPageSize = 50;
     public int PageNumber { get; set; } = 1;
@@ -17,5 +19,6 @@ public class UserParams
     public int MinAge { get; set; } = 18;
     public int MaxAge { get; set; } = 100;
     public string OrderBy { get; set; } = "lastActive";
+    
     
 }
