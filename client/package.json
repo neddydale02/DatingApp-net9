@@ -10,6 +10,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-architects/module-federation": "^19.0.1",
     "@angular/animations": "^19.0.4",
     "@angular/cdk": "^19.0.3",
     "@angular/common": "^19.0.4",
