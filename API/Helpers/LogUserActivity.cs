@@ -19,17 +19,17 @@ public class LogUserActivity : IAsyncActionFilter
         // Ottiene l'ID dell'utente autenticato
         var userId = resultContext.HttpContext.User.GetUserId();
 
-        // Ottiene il repository dell'utente dai servizi richiesti
-        var repo = resultContext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
+        // Ottiene il unitOfWorksitory dell'utente dai servizi richiesti
+        var unitOfWork = resultContext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
         
-        // Ottiene l'utente dal repository utilizzando l'ID
-        var user = await repo.GetUserByIdAsync(userId);
+        // Ottiene l'utente dal unitOfWorksitory utilizzando l'ID
+        var user = await unitOfWork.UserRepository.GetUserByIdAsync(userId);
         if (user == null) return;
         
         // Aggiorna l'ultima attività dell'utente
         user.LastActive = DateTime.UtcNow;
         
-        // Salva le modifiche nel repository
-        await repo.SaveAllAsync();
+        // Salva le modifiche nel unitOfWorksitory
+        await unitOfWork.Complete();
     }
 }

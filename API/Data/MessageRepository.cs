@@ -64,19 +64,14 @@ public class MessageRepository(DataContext context, IMapper mapper) : IMessageRe
             .ToListAsync();
 
         var unreadMessages = messages.Where(x => x.DateRead == null && 
-            x.RecipientUsername == currentUsername).ToList();
+            x.RecipientUsername == currentUsername).ToList(); // might not function properly with SignalR
 
         if (unreadMessages.Count != 0)
         {
             unreadMessages.ForEach(x => x.DateRead = DateTime.UtcNow);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(); // Da rimuovere quando implemento SignalR
         }
 
         return mapper.Map<IEnumerable<MessageDto>>(messages);
-    }
-
-    public async Task<bool> SaveAllAsync()
-    {
-        return await context.SaveChangesAsync() > 0;
     }
 }
