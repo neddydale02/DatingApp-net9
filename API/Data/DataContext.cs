@@ -40,7 +40,7 @@ AppUserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<i
             .HasOne(source => source.TargetUser)
             .WithMany(like => like.LikedByUsers)
             .HasForeignKey(fk => fk.TargetUserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Message>()
             .HasOne(x => x.Recipient)
